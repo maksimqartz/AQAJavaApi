@@ -41,7 +41,7 @@ public class Ex13UserAgentTest {
                 !actualBrowser.equals(userAgentTestCase.getExpectedBrowser()) ||
                 !actualDevice.equals(userAgentTestCase.getExpectedDevice())) {
 
-            System.out.printf("❌ FAILED for User-Agent: %s%n", userAgentTestCase.getUserAgent());
+            System.out.printf("FAILED for User-Agent: %s%n", userAgentTestCase.getUserAgent());
             System.out.printf("Expected: %s / %s / %s%n", userAgentTestCase.getExpectedPlatform(), userAgentTestCase.getExpectedBrowser(), userAgentTestCase.getExpectedDevice());
             System.out.printf("Actual:   %s / %s / %s%n%n", actualPlatform, actualBrowser, actualDevice);
         }
