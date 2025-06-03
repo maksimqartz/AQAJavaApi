@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DataGenerator {
+
     @Step("Generate a random email address")
     public static String getRandomEmail() {
     String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());

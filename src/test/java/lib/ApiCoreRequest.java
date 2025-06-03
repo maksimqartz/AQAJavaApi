@@ -64,4 +64,24 @@ public class ApiCoreRequest {
                 .delete(url)
                 .andReturn();
     }
+
+    @Step("Make a PUT-request to URL: {url}")
+    public Response makePutRequest(String url, Map<String, String> editData, String token, String cookie) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header("x-csrf-token", token)
+                .cookie("auth_sid", cookie)
+                .body(editData)
+                .put(url)
+                .andReturn();
+    }
+
+    @Step("Make a PUT-request to URL: {url} without auth")
+    public Response makePutRequestWithoutAuth(String url, Map<String, String> editData) {
+        return given()
+                .filter(new AllureRestAssured())
+                .body(editData)
+                .put(url)
+                .andReturn();
+    }
 }

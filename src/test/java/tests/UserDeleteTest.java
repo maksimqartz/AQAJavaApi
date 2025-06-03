@@ -17,10 +17,11 @@ public class UserDeleteTest extends BaseTestCase {
     @Test
     @Description("This test checks successful deletion of a user created by the test")
     @DisplayName("Positive test: Create, Delete and Check user")
+    @Tags({@Tag("positive"), @Tag("user"), @Tag("delete")})
     public void testCreateDeleteUser() {
         // Create User
         Map<String, String> userData = DataGenerator.getRegistrationalData();
-        Response createResponse = apiCoreRequest.makePostRequest("https://playground.learnqa.ru/api/user/", userData);
+        Response createResponse = apiCoreRequest.makePostRequest(BASE_URL + "user", userData);
         int userId = this.getIntFromJson(createResponse, "id");
 
         // Login
@@ -28,13 +29,13 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("email", userData.get("email"));
         authData.put("password", userData.get("password"));
 
-        Response loginResponse = apiCoreRequest.makePostRequest("https://playground.learnqa.ru/api/user/login", authData);
+        Response loginResponse = apiCoreRequest.makePostRequest(BASE_URL + "user/login", authData);
         String token = this.getHeader(loginResponse, "x-csrf-token");
         String cookie = this.getCookie(loginResponse, "auth_sid");
 
         // Delete
         Response deleteResponse = apiCoreRequest.makeDeleteRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                BASE_URL + "user/" + userId,
                 token,
                 cookie
         );
@@ -43,7 +44,7 @@ public class UserDeleteTest extends BaseTestCase {
 
         // Check User deleted
         Response getResponse = apiCoreRequest.makeGetRequestWithCookieAndHeader(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                BASE_URL + "user/" + userId,
                 token,
                 cookie
         );
@@ -55,6 +56,7 @@ public class UserDeleteTest extends BaseTestCase {
     @Test
     @Description("This test checks that user with ID=2 cannot be deleted (protected user)")
     @DisplayName("Negative test: Try to delete user with ID=2")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("delete")})
     public void testDeleteProtectedUser() {
         Map<String, String> authData = new HashMap<>();
         authData.put("email", "vinkotov@example.com");
@@ -77,6 +79,7 @@ public class UserDeleteTest extends BaseTestCase {
     @Test
     @Description("This test checks that a user cannot be deleted from another user's account")
     @DisplayName("Negative test: Try to delete user as another user")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("create"), @Tag("delete")})
     public void testDeleteUserAsAnotherUser() {
         // Create User 1
         Map<String, String> user1Data = DataGenerator.getRegistrationalData();
