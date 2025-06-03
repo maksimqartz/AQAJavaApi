@@ -4,7 +4,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
-import lib.ApiCoreRequest;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
@@ -19,8 +18,6 @@ import java.util.Map;
 @Epic("Registration Cases")
 @Feature("Registration")
 public class UserRegisterTest extends BaseTestCase {
-
-    private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
 
     @Description("This test checks successful user registration with a unique email.")
     @DisplayName("Test User Registration Successfully")

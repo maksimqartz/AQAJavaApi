@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class BaseTestCase {
+
+    protected final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
+
     // В метод передаем headers
     protected String getHeader(Response Response, String name) {
         Headers headers = Response.getHeaders();

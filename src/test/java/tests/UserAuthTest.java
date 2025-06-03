@@ -6,7 +6,6 @@ import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
-import lib.ApiCoreRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import java.util.Map;
 @Feature("Authorization")
 public class UserAuthTest extends BaseTestCase {
 
-    private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
     String cookie;
     String header;
     int userIdOnAuth;
@@ -45,7 +43,7 @@ public class UserAuthTest extends BaseTestCase {
     public void testUserAuth() {
 
         Response responseCheckAuth = apiCoreRequest
-                .makeGetRequest(
+                .makeGetRequestWithCookieAndHeader(
                         "https://playground.learnqa.ru/api/user/auth",
                         this.header,
                         this.cookie);
