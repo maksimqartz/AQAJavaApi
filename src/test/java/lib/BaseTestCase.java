@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BaseTestCase {
 
     protected final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
+    protected final String BASE_URL = "https://playground.learnqa.ru/api/";
 
     // В метод передаем headers
     protected String getHeader(Response Response, String name) {

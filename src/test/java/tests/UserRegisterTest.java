@@ -89,6 +89,6 @@ public class UserRegisterTest extends BaseTestCase {
         Response responseCreateUser = apiCoreRequest.makePostRequest("https://playground.learnqa.ru/api/user", userData);
 
         Assertions.assertResponseCodeEquals(responseCreateUser, 400);
-        Assertions.assertResponseTextEquals(responseCreateUser, "The value of '"+ param +"' field is too " + length);
+        Assertions.assertResponseTextEquals(responseCreateUser, "The value of '" + param + "' field is too " + length);
     }
 }

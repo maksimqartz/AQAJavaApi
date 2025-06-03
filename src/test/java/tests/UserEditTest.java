@@ -1,27 +1,33 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Edit Users Cases")
+@Feature("Edit Users")
 public class UserEditTest extends BaseTestCase {
 
+    @Description("This test checks editing user data after successful registration and login.")
+    @DisplayName("Test User Edit Successfully")
     @Test
     public void testEditNewUserTest() {
         //GENERATE USER
         Map<String, String> userData = DataGenerator.getRegistrationalData();
 
-        JsonPath responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
+        JsonPath responseCreateAuth = apiCoreRequest
+                .makePostRequest("https://playground.learnqa.ru/api/user", userData)
                 .jsonPath();
 
         String userId = responseCreateAuth.getString("id");
@@ -31,11 +37,8 @@ public class UserEditTest extends BaseTestCase {
         authData.put("email", userData.get("email"));
         authData.put("password", userData.get("password"));
 
-        Response responseGetAuth = RestAssured
-                .given()
-                .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
-                .andReturn();
+        Response responseGetAuth = apiCoreRequest
+                .makePostRequest("https://playground.learnqa.ru/api/user/login", authData);
 
         //EDIT USER
         String newName = "Edited Name";
@@ -62,5 +65,4 @@ public class UserEditTest extends BaseTestCase {
         Assertions.assertResponseCodeEquals(responseEditUser, 200);
         Assertions.assertJsonByName(responseNewUserData, "firstName", newName);
     }
-
 }
