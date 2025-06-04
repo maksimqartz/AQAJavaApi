@@ -1,14 +1,10 @@
 package tests;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -17,6 +13,9 @@ import java.util.Map;
 
 @Epic("Authorization Cases")
 @Feature("Authorization")
+@Owner("qa-user")
+@Severity(SeverityLevel.CRITICAL)
+@Link(name = "API Docs", url = "https://playground.learnqa.ru/api/map")
 public class UserAuthTest extends BaseTestCase {
 
     String cookie;
@@ -24,6 +23,7 @@ public class UserAuthTest extends BaseTestCase {
     int userIdOnAuth;
 
     @BeforeEach
+    @Step("Login user before each test")
     public void loginUser() {
         Map<String, String> authData = new HashMap<>();
         authData.put("email", "vinkotov@example.com");
@@ -40,6 +40,8 @@ public class UserAuthTest extends BaseTestCase {
     @Test
     @Description("This test successfully checks user authorization by email and password.")
     @DisplayName("Test Positive User Authorization")
+    @Story("AUTH-1")
+    @Tags({@Tag("positive"), @Tag("user"), @Tag("auth")})
     public void testUserAuth() {
 
         Response responseCheckAuth = apiCoreRequest
@@ -51,10 +53,12 @@ public class UserAuthTest extends BaseTestCase {
         Assertions.assertJsonByName(responseCheckAuth, "user_id", this.userIdOnAuth);
     }
 
-    @Description("This test checks authorization status w/o sending auth cookie or token.")
-    @DisplayName("Test Negative User Authorization")
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "headers"})
+    @Description("This test checks authorization status w/o sending auth cookie or token.")
+    @DisplayName("Test Negative User Authorization")
+    @Story("AUTH-2")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("auth"), @Tag("parameterized")})
     public void testNegativeAuthUser(String condition) {
         if (condition.equals("cookie")) {
             Response responseForCheck = apiCoreRequest.makeGetRequestOnlyWithCookie(

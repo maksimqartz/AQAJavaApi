@@ -12,11 +12,15 @@ import java.util.Map;
 
 @Epic("User Deletion Cases")
 @Feature("Delete User")
+@Owner("qa-user")
+@Severity(SeverityLevel.NORMAL)
+@Link(name = "API Docs", url = "https://playground.learnqa.ru/api/map")
 public class UserDeleteTest extends BaseTestCase {
 
     @Test
     @Description("This test checks successful deletion of a user created by the test")
     @DisplayName("Positive test: Create, Delete and Check user")
+    @Story("DELETE-1")
     @Tags({@Tag("positive"), @Tag("user"), @Tag("delete")})
     public void testCreateDeleteUser() {
         // Create User
@@ -56,6 +60,7 @@ public class UserDeleteTest extends BaseTestCase {
     @Test
     @Description("This test checks that user with ID=2 cannot be deleted (protected user)")
     @DisplayName("Negative test: Try to delete user with ID=2")
+    @Story("DELETE-2")
     @Tags({@Tag("negative"), @Tag("user"), @Tag("delete")})
     public void testDeleteProtectedUser() {
         Map<String, String> authData = new HashMap<>();
@@ -79,6 +84,7 @@ public class UserDeleteTest extends BaseTestCase {
     @Test
     @Description("This test checks that a user cannot be deleted from another user's account")
     @DisplayName("Negative test: Try to delete user as another user")
+    @Story("DELETE-3")
     @Tags({@Tag("negative"), @Tag("user"), @Tag("create"), @Tag("delete")})
     public void testDeleteUserAsAnotherUser() {
         // Create User 1
@@ -107,5 +113,6 @@ public class UserDeleteTest extends BaseTestCase {
         );
 
         Assertions.assertResponseCodeEquals(deleteResponse, 400);
+        Assertions.assertJsonByName(deleteResponse, "error", "This user can only delete their own account.");
     }
 }

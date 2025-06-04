@@ -1,14 +1,14 @@
 package tests;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -16,10 +16,15 @@ import java.util.Map;
 
 @Epic("Edit Users Cases")
 @Feature("Edit Users")
+@Owner("qa-user")
+@Severity(SeverityLevel.NORMAL)
+@Link(name = "API Docs", url = "https://playground.learnqa.ru/api/map")
 public class UserEditTest extends BaseTestCase {
 
     @Description("This test checks editing user data after successful registration and login.")
     @DisplayName("Positive Test: Successful User Edit")
+    @Story("EDIT-1")
+    @Tags({@Tag("positive"), @Tag("user"), @Tag("edit")})
     @Test
     public void testEditNewUserTest() {
         //GENERATE USER
@@ -66,6 +71,8 @@ public class UserEditTest extends BaseTestCase {
     @Test
     @Description("This test checks editing user email to Invalid Format.")
     @DisplayName("Negative Test: Edit User Email to Invalid Format")
+    @Story("EDIT-2")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("edit")})
     public void testEditUserInvalidEmail() {
         Map<String, String> userData = DataGenerator.getRegistrationalData();
         JsonPath createResponse = apiCoreRequest.makePostRequest(BASE_URL + "user", userData).jsonPath();
@@ -93,6 +100,8 @@ public class UserEditTest extends BaseTestCase {
     @Test
     @Description("This test checks editing user data without authorization.")
     @DisplayName("Negative Test: Edit User Without Auth")
+    @Story("EDIT-3")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("edit")})
     public void testEditUserWithoutAuth() {
         Map<String, String> userData = DataGenerator.getRegistrationalData();
         String userId = apiCoreRequest.makePostRequest(BASE_URL + "user", userData)
@@ -113,6 +122,8 @@ public class UserEditTest extends BaseTestCase {
     @Test
     @Description("This test checks prohibit editing user data with authorization as another user.")
     @DisplayName("Negative Test: Edit User With Auth of Another User")
+    @Story("EDIT-4")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("edit")})
     public void testEditUserWithAuthAsAnotherUser() {
         // Create user A
         Map<String, String> userA = DataGenerator.getRegistrationalData();
@@ -148,6 +159,8 @@ public class UserEditTest extends BaseTestCase {
     @Test
     @Description("This test checks fail editing user with too short firstName.")
     @DisplayName("Negative Test: Edit User With Short FirstName")
+    @Story("EDIT-5")
+    @Tags({@Tag("negative"), @Tag("user"), @Tag("edit")})
     public void testEditUserShortFirstName() {
         Map<String, String> userData = DataGenerator.getRegistrationalData();
         JsonPath createResponse = apiCoreRequest.makePostRequest(BASE_URL + "user", userData).jsonPath();
